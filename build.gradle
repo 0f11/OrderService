@@ -10,6 +10,8 @@ repositories {
 sourceCompatibility = 11
 
 dependencies {
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.9.3'
+    
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
 }
 
