@@ -1,29 +1,23 @@
 package exservlet;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MapClass {
-    private Map<String, String> map;
 
-    public void setMap(Map<String, String> map) {
-        this.map = map;
-    }
+    private static  Map<Long, Orders> MAP;
+    private static Integer ID_COUNTER = 1;
 
-    public Map<String, String> getMap() {
-        return map;
-    }
-
-    public String reverseString(String key) {
-        String reversed = "";
-        for (int i = key.length() - 1; i >= 0; i--) {
-            reversed = reversed + key.charAt(i);
+    public static Orders setToMap(Orders order){
+        if (MAP == null){
+            MAP = new HashMap<>();
         }
-        return reversed;
+        order.setId(ID_COUNTER.longValue());
+        MAP.put(order.getId(), order);
+        ID_COUNTER++;
+        return order;
     }
-
-    public void addDataToMap(String key, String value) {
-        String keyAdd = reverseString(key);
-        String valueAdd = reverseString(value);
-        map.put(keyAdd, valueAdd);
+    public static Orders getById(String id){
+        return MAP.get(Long.parseLong(id));
     }
 }

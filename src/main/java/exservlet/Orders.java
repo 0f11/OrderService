@@ -1,8 +1,10 @@
 package exservlet;
+import java.util.List;
 
 public class Orders {
     private Long id;
     private String orderNumber;
+    private List<OrderRow> orderRows;
 
     public Long getId() {
         return id;
@@ -15,15 +17,17 @@ public class Orders {
     public String getOrderNumber() {
         return orderNumber;
     }
-    public void setOrderNumber(String orderNumber){
+
+    public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
 
-    @Override
-    public String toString() {
-        return "{ " +
-                "\"id\": " +"\"" +id +"\"" +
-                ", \"orderNumber\": \"" + orderNumber + "\" " +
-                '}';
+    public List<OrderRow> getOrderRows() {
+        return orderRows;
+    }
+
+    public void setOrderRows(List<OrderRow> orderRow) {
+        this.orderRows = orderRow;
     }
 }
+

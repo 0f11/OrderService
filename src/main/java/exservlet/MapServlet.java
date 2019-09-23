@@ -1,5 +1,6 @@
 package exservlet;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.ServletException;
@@ -13,10 +14,12 @@ import java.util.Map;
 
 @WebServlet("api/parser")
 public class MapServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         Map<String,String> map = new HashMap<>();
         MapClass mapClass = new MapClass();
-        mapClass.setMap(map);
+        //mapClass.setMap(map);
         String s = Util.readStream(request.getInputStream());
         String [] data = s.split(",");
 
@@ -24,12 +27,12 @@ public class MapServlet extends HttpServlet {
             String[] dataSplit = datum.split(":");
             String key = dataSplit[0].replace("{", "").replace("\"", "").trim();
             String value = dataSplit[1].replace("}", "").replace("\"", "").trim();
-            mapClass.addDataToMap(key, value);
+            //mapClass.addDataToMap(key, value);
         }
         ObjectMapper objectmapper = new ObjectMapper();
-        String json = objectmapper.writeValueAsString(mapClass.getMap());
+        //String json = objectmapper.writeValueAsString(mapClass.getMap());
         response.setHeader("Content-Type","application/json");
-        response.getWriter().print(json);
+        //response.getWriter().print(json);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
