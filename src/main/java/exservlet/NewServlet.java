@@ -16,7 +16,7 @@ public class NewServlet extends HttpServlet {
             throws ServletException, IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Orders post = MapClass.setToMap(objectMapper.readValue(request.getInputStream(), Orders.class));
+        Orders post = MapClass.addToMap(objectMapper.readValue(request.getInputStream(), Orders.class));
 
         response.setHeader("Content-Type", "application/json");
         response.getWriter().print(objectMapper.writeValueAsString(post));
@@ -27,9 +27,9 @@ public class NewServlet extends HttpServlet {
             throws ServletException, IOException {
 
             String s = request.getParameter("id");
-            if (s == null)
+            if (s == null) {
                 response.getWriter().println("Invalid id");
-
+            }
             ObjectMapper objectMapper = new ObjectMapper();
             Orders order = MapClass.getById(s);
             response.setContentType("application/json");

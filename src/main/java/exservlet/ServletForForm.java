@@ -19,7 +19,7 @@ public class ServletForForm extends HttpServlet {
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String,String> map = new HashMap<>();
         map.put("orderNumber", s);
-        Orders order = MapClass.setToMap(objectMapper.convertValue(map, Orders.class));
+        Orders order = MapClass.addToMap(objectMapper.convertValue(map, Orders.class));
         response.setHeader("Content-Type", "text/plain");
         response.getWriter().print(order.getId());
 
