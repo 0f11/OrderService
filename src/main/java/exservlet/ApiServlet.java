@@ -8,32 +8,40 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @WebServlet("/api/orders")
-public class NewServlet extends HttpServlet {
+public class ApiServlet extends HttpServlet {
+    private final OrderService os = new OrderService();
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Orders post = MapClass.addToMap(objectMapper.readValue(request.getInputStream(), Orders.class));
+        Order post = os.addOrder(objectMapper.readValue(request.getInputStream(), Order.class));
 
         response.setHeader("Content-Type", "application/json");
         response.getWriter().print(objectMapper.writeValueAsString(post));
 
     }
-
-        protected void doGet (HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doGet (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            List<Order> allOrders = new ArrayList<>();
+            String id = request.getParameter("id");
 
-            String s = request.getParameter("id");
-            if (s == null) {
-                response.getWriter().println("Invalid id");
+            if (id == null) {
+                allOrders.addAll(os.getAllOrders());
+            }else{
+                Order order = os.getOrder(Long.parseLong(id));
+                allOrders.add(order);
             }
             ObjectMapper objectMapper = new ObjectMapper();
-            Orders order = MapClass.getById(s);
             response.setContentType("application/json");
-            response.getWriter().println(objectMapper.writeValueAsString(order));
+            response.getWriter().println(objectMapper.writeValueAsString(id == null ? allOrders : allOrders.get(0)));
         }
     }
 

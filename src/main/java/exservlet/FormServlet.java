@@ -13,18 +13,20 @@ import java.util.Map;
 
 @WebServlet("orders/form")
 
-public class ServletForForm extends HttpServlet {
+public class FormServlet extends HttpServlet {
+    private final OrderService os = new OrderService();
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String s = request.getParameter("orderNumber");
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String,String> map = new HashMap<>();
         map.put("orderNumber", s);
-        Orders order = MapClass.addToMap(objectMapper.convertValue(map, Orders.class));
+        Order order = os.addOrder(objectMapper.convertValue(map, Order.class));
         response.setHeader("Content-Type", "text/plain");
         response.getWriter().print(order.getId());
 
     }
-
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }

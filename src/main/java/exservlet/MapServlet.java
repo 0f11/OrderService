@@ -1,5 +1,6 @@
 package exservlet;
 
+import util.Util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @WebServlet("api/parser")
 public class MapServlet extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String,String> map = new HashMap<>();
         MapperClass mapClass = new MapperClass();
@@ -31,7 +33,7 @@ public class MapServlet extends HttpServlet {
         response.setHeader("Content-Type","application/json");
         response.getWriter().print(json);
     }
-
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }

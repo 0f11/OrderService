@@ -1,7 +1,7 @@
 package exservlet;
 import java.util.List;
 
-public class Orders {
+public class Order {
     private Long id;
     private String orderNumber;
     private List<OrderRow> orderRows;
