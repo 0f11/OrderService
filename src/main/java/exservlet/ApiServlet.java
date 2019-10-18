@@ -43,5 +43,13 @@ public class ApiServlet extends HttpServlet {
             response.setContentType("application/json");
             response.getWriter().println(objectMapper.writeValueAsString(id == null ? allOrders : allOrders.get(0)));
         }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doDelete(req, resp);
+        String id = req.getParameter("id");
+        os.deleteOrder(Long.parseLong(id));
+        resp.getWriter().print("Order Deleted");
     }
+}
 
