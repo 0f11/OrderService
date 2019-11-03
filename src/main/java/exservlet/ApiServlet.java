@@ -1,6 +1,7 @@
 package exservlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.ApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,22 +15,34 @@ import java.util.List;
 
 @WebServlet("/api/orders")
 public class ApiServlet extends HttpServlet {
-    private final OrderService os = new OrderService();
+    private  OrderService os;
+
+    @Override
+    public void init(){
+        var servletContext = getServletContext();
+        var sprintContext = (ApplicationContext) servletContext.getAttribute("context");
+        os = (OrderService) sprintContext.getBean("orderService");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Order post = os.addOrder(objectMapper.readValue(request.getInputStream(), Order.class));
-
+        Order post = objectMapper.readValue(request.getInputStream(), Order.class);
+        if (post.getOrderNumber().length() < 2 || post.getOrderNumber() == null){
+            response.setStatus(400);
+            response.getWriter().println("too_short_number");
+            return;
+        }
+        var correctOrder = os.addOrder(post);
         response.setHeader("Content-Type", "application/json");
-        response.getWriter().print(objectMapper.writeValueAsString(post));
+        response.getWriter().print(objectMapper.writeValueAsString(correctOrder));
 
     }
     @Override
     protected void doGet (HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
             List<Order> allOrders = new ArrayList<>();
             String id = request.getParameter("id");
 

@@ -1,6 +1,7 @@
 package exservlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.ApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +15,14 @@ import java.util.Map;
 @WebServlet("orders/form")
 
 public class FormServlet extends HttpServlet {
-    private final OrderService os = new OrderService();
+    private  OrderService os;
+
+    @Override
+    public void init(){
+        var servletContext = getServletContext();
+        var sprintContext = (ApplicationContext) servletContext.getAttribute("context");
+        os = (OrderService) sprintContext.getBean("orderService");
+    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String s = request.getParameter("orderNumber");

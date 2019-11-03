@@ -1,9 +1,16 @@
 package exservlet;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.List;
-
+@Service
 public class OrderService {
-    private final OrderDao orderDao = new OrderDao();
+    @Getter
+    @Setter
+    @Autowired
+    private OrderDao orderDao;
 
     public Order addOrder(Order order){
         return orderDao.addOrder(order);

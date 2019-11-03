@@ -38,6 +38,9 @@ dependencies {
     compile group: 'org.apache.logging.log4j',
             name: 'log4j-core',
             version: '2.11.1'
+    implementation 'org.springframework:spring-context:5.2.0.RELEASE'
+    implementation 'org.springframework:spring-jdbc:5.2.0.RELEASE'
+    implementation 'org.springframework:spring-aop:5.2.0.RELEASE'
 }
 
 gretty {
