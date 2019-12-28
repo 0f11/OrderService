@@ -1,6 +1,5 @@
 package exservlet;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
@@ -9,24 +8,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResultSetExtractorForOrder implements ResultSetExtractor<List<Order>> {
-    private List<Order> orders = new ArrayList<>();
+    private List<Order> ords = new ArrayList<>();
+
     @Override
-    public List<Order> extractData(ResultSet rs) throws SQLException, DataAccessException {
-        OrderRows newOrderRow = new OrderRows();
-        Order newOrder = new Order();
-        newOrder.setOrderRows(new ArrayList<>());
+    public List<Order> extractData(ResultSet rs) throws SQLException {
 
         while (rs.next()) {
-            newOrder.setId(rs.getLong("id"));
-            newOrder.setOrderNumber(rs.getString("order_number"));
-            newOrderRow.setRowId(rs.getLong("row_id"));
-            newOrderRow.setOrderRowId(rs.getLong("row_order_id"));
-            newOrderRow.setItemName(rs.getString("item_name"));
-            newOrderRow.setPrice(rs.getInt("price"));
-            newOrderRow.setQuantity(rs.getInt("quantity"));
-            newOrder.getOrderRows().add(newOrderRow);
-            orders.add(newOrder);
+            var id = rs.getLong("id");
+            Order ord =
+                    ords.stream()
+                            .filter(o -> o.getId().equals(id))
+                            .findFirst().orElse(null);
+            if (ord == null) {
+                ord = new Order();
+                ord.setId(id);
+                ord.setOrderNumber(rs.getString("order_number"));
+                ord.setOrderRows(new ArrayList<>());
+                ords.add(ord);
+            }
+            ord.getOrderRows().add(getOrderRowFromRs(rs));
         }
-        return orders;
+        return ords;
+    }
+
+    private OrderRows getOrderRowFromRs(ResultSet resultSet) throws SQLException {
+        var orderRows = new OrderRows();
+        orderRows.setRowId(resultSet.getLong("row_id"));
+        orderRows.setItemName(resultSet.getString("item_name"));
+        orderRows.setQuantity(resultSet.getInt("quantity"));
+        orderRows.setPrice(resultSet.getInt("price"));
+        orderRows.setOrderRowId(resultSet.getLong("row_order_id"));
+        return orderRows;
     }
 }

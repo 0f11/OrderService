@@ -24,10 +24,12 @@ public class OrderRows {
     public Integer getPrice() {
         return price;
     }
-    public String getItemName(){
+
+    public String getItemName() {
         return itemName;
     }
-    public Integer getQuantity(){
+
+    public Integer getQuantity() {
         return quantity;
     }
 

@@ -1,4 +1,5 @@
 package exservlet;
+
 import java.util.List;
 
 public class Order {
@@ -29,5 +30,6 @@ public class Order {
     public void setOrderRows(List<OrderRows> orderRow) {
         this.orderRows = orderRow;
     }
+
 }
 

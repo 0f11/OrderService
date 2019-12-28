@@ -10,10 +10,10 @@ CREATE TABLE orders (
     );
 
 CREATE TABLE rows (
-        id BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('sq'),
+        row_id BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('sq'),
         item_name VARCHAR(255) NOT NULL,
         quantity INTEGER,
         price INTEGER,
-        order_id BIGINT NOT NULL REFERENCES orders(id),
-        FOREIGN KEY (order_id) REFERENCES orders(id)
+        order_id BIGINT NOT NULL,
+        FOREIGN KEY (order_id) REFERENCES orders ON DELETE CASCADE
     );
